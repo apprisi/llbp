@@ -2,8 +2,9 @@ CXX = g++
 CXXFLAGS = -Wall -g -O3
 #-std=gnu++98 -fPIC
 
-LD_FLAGS = -Llib/opencv
+LD_FLAGS = -Llib/cv -Llib/vl -lvl -lopencv_core -lopencv_highgui -lopencv_imgproc -lopencv_flann 
 
+INCLUDE_FLAGS = -Iinclude/
 #LIBFLAGS = -fopenmp
 
 SRC_DIR := src
@@ -19,11 +20,11 @@ TARGET = $(BIN_DIR)/llbp
 
 all: $(TARGET)
 
-$(OBJECTS): %.o : %.cpp
-	$(CXX) $(CXXFLAGS) -o $@ -c $<
+$(BUILD_DIR)/%.o : $(SRC_DIR)/%.cpp
+	$(CXX) $(CXXFLAGS) -o $@ -c $< $(INCLUDE_FLAGS)
 	
 $(TARGET) : $(OBJECTS)
-	$(CXX) $(CXXFLAGS) -o $@ $^
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LD_FLAGS)
 
 clean:
 	$(RM) $(TARGET) $(OBJECTS)
